@@ -229,16 +229,19 @@ async def migrate_app_settings_data(engine: AsyncEngine) -> None:
         import json
         settings_data = json.loads(settings_json) if settings_json else {}
 
-        # Default values for new retry settings
-        default_retry_settings = {
+        # Default values for new settings (retry + branding)
+        default_settings = {
             "max_retries": 5,
             "retry_total_timeout_seconds": 2.0,
-            "retry_base_delay_ms": 50
+            "retry_base_delay_ms": 50,
+            "branding_title": "Ollama Proxy",
+            "branding_logo_url": None,
+            "branding_show_logo": False
         }
 
         # Add missing fields
         updated = False
-        for key, default_value in default_retry_settings.items():
+        for key, default_value in default_settings.items():
             if key not in settings_data:
                 settings_data[key] = default_value
                 updated = True
@@ -251,7 +254,7 @@ async def migrate_app_settings_data(engine: AsyncEngine) -> None:
                 text("UPDATE app_settings SET settings_data = :settings WHERE id = :id"),
                 {"settings": updated_json, "id": settings_id}
             )
-            logger.info("Updated app_settings with new retry configuration fields")
+            logger.info("Updated app_settings with new configuration fields")
         else:
             logger.debug("app_settings already has all required fields")
 
