@@ -15,6 +15,11 @@ class AppSettingsModel(BaseModel):
 
     model_update_interval_minutes: int = 10
 
+    # Branding configuration
+    branding_title: str = "Ollama Proxy"
+    branding_logo_url: Optional[str] = None
+    branding_show_logo: bool = False
+
     # Retry configuration for backend requests
     max_retries: int = Field(
         default=5,

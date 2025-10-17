@@ -26,7 +26,8 @@ templates = Jinja2Templates(directory="app/templates")
 def get_template_context(request: Request) -> dict:
     return {
         "request": request,
-        "is_redis_connected": request.app.state.redis is not None
+        "is_redis_connected": request.app.state.redis is not None,
+        "app_settings": request.app.state.settings
     }
 
 def flash(request: Request, message: str, category: str = "info"):
@@ -174,6 +175,13 @@ async def admin_settings_post(request: Request, db: AsyncSession = Depends(get_d
             allowed_ips=form_data.get("allowed_ips", ""),
             denied_ips=form_data.get("denied_ips", ""),
             model_update_interval_minutes=int(form_data.get("model_update_interval_minutes")),
+            branding_title=form_data.get("branding_title", "Ollama Proxy"),
+            branding_logo_url=form_data.get("branding_logo_url") or None,
+            branding_show_logo=form_data.get("branding_show_logo") == "on",
+            # Preserve retry settings from current settings (not exposed in the UI yet)
+            max_retries=current_settings.max_retries,
+            retry_total_timeout_seconds=current_settings.retry_total_timeout_seconds,
+            retry_base_delay_ms=current_settings.retry_base_delay_ms,
         )
         
         await settings_crud.update_app_settings(db, settings_data=updated_settings_data)

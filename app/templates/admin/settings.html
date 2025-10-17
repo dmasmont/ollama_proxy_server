@@ -32,6 +32,31 @@
             </div>
         </div>
 
+        <!-- Branding Settings -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-bold mb-4">Branding Configuration</h2>
+            <p class="text-sm text-gray-500 mb-4">Customize the application title and logo displayed in the admin interface.</p>
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <label for="branding_title" class="block text-sm font-medium text-gray-700">Application Title</label>
+                    <input type="text" id="branding_title" name="branding_title" value="{{ settings.branding_title }}" class="mt-1 block w-full input-field" placeholder="Ollama Proxy">
+                    <p class="mt-1 text-xs text-gray-500">This title will appear in the sidebar and footer.</p>
+                </div>
+                <div>
+                    <label for="branding_logo_url" class="block text-sm font-medium text-gray-700">Logo URL</label>
+                    <input type="text" id="branding_logo_url" name="branding_logo_url" value="{{ settings.branding_logo_url or '' }}" class="mt-1 block w-full input-field" placeholder="/static/logos/logo.png">
+                    <p class="mt-1 text-xs text-gray-500">Path to logo file (e.g., /static/logos/logo.png) or external URL. Leave empty for no logo.</p>
+                </div>
+                <div>
+                    <label class="flex items-center">
+                        <input type="checkbox" id="branding_show_logo" name="branding_show_logo" {% if settings.branding_show_logo %}checked{% endif %} class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm font-medium text-gray-700">Show Logo</span>
+                    </label>
+                    <p class="mt-1 text-xs text-gray-500 ml-6">Enable this to display the logo next to the application title.</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Other Settings -->
         <div class="bg-white p-6 rounded-lg shadow-md mb-8">
             <h2 class="text-2xl font-bold mb-4">General Settings</h2>
